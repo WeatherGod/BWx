@@ -94,7 +94,7 @@ BWx-$(VERSION).tar : include/BMetar.h include/BMOS.h include/CloudType.h include
 	cp -f include/BMetar.h include/BMOS.h include/CloudType.h include/WeatherType.h "BWx-$(VERSION)/include"
 	cp -f src/BMetar.C src/BMOS.C src/CloudType.C src/WeatherType.C "BWx-$(VERSION)/src"
 	cp -f Makefile "BWx-$(VERSION)/"
-	
+	-rm -rf "BWx-$(VERSION).tar"
 	tar -cf "BWx-$(VERSION).tar" "BWx-$(VERSION)/"
 	rm -rf "BWx-$(VERSION)/"
 
