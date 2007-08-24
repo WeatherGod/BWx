@@ -1,6 +1,8 @@
 CC = gcc
 CFLAGS = -O2
 
+VERSION = 0.5
+
 ######################################################################
 MYINC_PATH = /usr/include/BUtils
 MYLIB_PATH = /usr/lib
@@ -57,9 +59,9 @@ clean :
 	- rm -f lib/libBMetar.so
 	- rm -f BMOS.o
 	- rm -f lib/libBMOS.so
-	- rm -f BWx.tar
-	- rm -f BWx.tar.gz
-	- rm -f BWx.tar.bz2
+	- rm -f "BWx-$(VERSION).tar"
+	- rm -f "BWx-$(VERSION).tar.gz"
+	- rm -f "BWx-$(VERSION).tar.bz2"
 
 uninstall : remove
 
@@ -71,24 +73,28 @@ remove :
 	- rm -f $(MYLIB_PATH)/libBMOS.so
 	- rm -f $(MYINC_PATH)/BMOS.h
 
-tar : BWx.tar
+tar : BWx-$(VERSION).tar
 
-tar.gz : BWx.tar.gz
+tar.gz : BWx-$(VERSION).tar.gz
 
-tar.bz2 : BWx.tar.bz2
+tar.bz2 : BWx-$(VERSION).tar.bz2
 
-BWx.tar.gz : BWx.tar
-	gzip -f BWx.tar
+BWx-$(VERSION).tar.gz : BWx-$(VERSION).tar
+	gzip -f "BWx-$(VERSION).tar"
 
-BWx.tar.bz2 : BWx.tar
-	bzip2 -f BWx.tar
+BWx-$(VERSION).tar.bz2 : BWx-$(VERSION).tar
+	bzip2 -f "BWx-$(VERSION).tar"
 
-BWx.tar : include include/BMetar.h include/BMOS.h include/CloudType.h include/WeatherType.h \
-          src src/BMetar.C src/BMOS.C src/CloudType.C src/WeatherType.C \
-          lib Makefile
-	-rm -f BWx.tar
-	tar -cf BWx.tar --no-recursion \
-                 ../BWx/include/BMetar.h ../BWx/include/BMOS.h ../BWx/include/CloudType.h ../BWx/include/WeatherType.h \
-                 ../BWx/src/BMetar.C ../BWx/src/BMOS.C ../BWx/src/CloudType.C ../BWx/src/WeatherType.C \
-                 ../BWx/lib ../BWx/Makefile
+BWx-$(VERSION).tar : include/BMetar.h include/BMOS.h include/CloudType.h include/WeatherType.h \
+                     src/BMetar.C src/BMOS.C src/CloudType.C src/WeatherType.C \
+                     Makefile
+	mkdir -p "BWx-$(VERSION)/include"
+	mkdir -p "BWx-$(VERSION)/src"
+	mkdir -p "BWx-$(VERSION)/lib"
+	cp -f include/BMetar.h include/BMOS.h include/CloudType.h include/WeatherType.h "BWx-$(VERSION)/include"
+	cp -f src/BMetar.C src/BMOS.C src/CloudType.C src/WeatherType.C "BWx-$(VERSION)/src"
+	cp -f Makefile "BWx-$(VERSION)/"
+	
+	tar -cf "BWx-$(VERSION).tar" "BWx-$(VERSION)/"
+	rm -rf "BWx-$(VERSION)/"
 
